@@ -1,23 +1,27 @@
 from ftplib import FTP
 
 # Configuración del servidor FTP
-ftp_host = 'tu_servidor_ftp.com'
-ftp_user = 'tu_usuario_ftp'
-ftp_password = 'tu_contraseña_ftp'
+ftp_host = 'ftp.vinalium.com'
+ftp_user = 'roblesandres@vinalium.com'
+ftp_password = 'At062415*'
 
 # Ruta local del archivo que deseas subir
-archivo_local = 'ruta/del/archivo/local/archivo.txt'
+archivo_local = './products-list.xml'
 
 # Ruta remota en el servidor FTP donde deseas almacenar el archivo
-archivo_remoto = '/ruta/en/el/servidor/archivo.txt'
+archivo_remoto = '/public_html'
 
 # Conexión al servidor FTP
 with FTP() as ftp:
-    ftp.connect(ftp_host)
-    ftp.login(ftp_user, ftp_password)
+    try:
+        ftp.connect(ftp_host)
+        ftp.login(ftp_user, ftp_password)
+        print("Se conecto exitosamente")
+    except TypeError as err:
+        print("Se conecto exitosamente", err)
 
     # Cambia al directorio remoto (opcional)
-    ftp.cwd('/directorio/remoto')
+    #ftp.cwd('/')
 
     # Abre el archivo local en modo binario
     with open(archivo_local, 'rb') as file:
