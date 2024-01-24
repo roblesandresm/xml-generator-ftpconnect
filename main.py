@@ -4,15 +4,12 @@ import os
 import pandas as pd
 import xml.etree.ElementTree as ET
 from ftplib import FTP
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 
-load_dotenv()
-
-# Rutas y credenciales ftp
-ftp_host = os.getenv("FTP_HOST")
-ftp_user = os.getenv("FTP_USER")
-ftp_password = os.getenv("FTP_PASSWORD")
-ftp_path = "public_html"
+ftp_host='ftp.tucanmarketingdigital.com'
+ftp_user='u482066164.arobles'
+ftp_password='At062415*'
+ftp_path = "/"
 
 async def download_from_dropbox(url, destino):
     try:
@@ -40,7 +37,7 @@ def dataframe_to_xml(df, root_name='vivino-product-list', tags=[], row_name='pro
 def upload_ftp_file(archivo_local, servidor_ftp, usuario_ftp, clave_ftp, directorio_remoto):
     try:
         # Conectar al servidor FTP
-        ftp = FTP(servidor_ftp)
+        ftp = FTP(servidor_ftp, port=21)
         ftp.login(user=usuario_ftp, passwd=clave_ftp)
 
         # Cambiar al directorio remoto
@@ -99,7 +96,7 @@ async def main():
     print(f'Se ha creado el archivo XML en: {xml_file_path}')
 
     # subir el archivo al creado en local al ftp del servidor remoto
-    upload_ftp_file(xml_file_path,ftp_host, ftp_user, ftp_password, ftp_path)
+    upload_ftp_file(xml_file_path, ftp_host, ftp_user, ftp_password, ftp_path)
 
 if __name__ == "__main__":
     asyncio.run(main())

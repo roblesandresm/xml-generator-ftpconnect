@@ -4,8 +4,13 @@ import os
 def subir_archivo_ftp(archivo_local, servidor_ftp, usuario_ftp, clave_ftp, directorio_remoto):
     try:
         # Conectar al servidor FTP
-        ftp = FTP(servidor_ftp)
+        ftp = FTP()
+        ftp.connect(servidor_ftp, port=21)
         ftp.login(user=usuario_ftp, passwd=clave_ftp)
+
+        # Verificar si el directorio remoto existe, si no, crearlo
+        if not ftp.nlst(directorio_remoto):
+            ftp.mkd(directorio_remoto)
 
         # Cambiar al directorio remoto
         ftp.cwd(directorio_remoto)
@@ -16,19 +21,16 @@ def subir_archivo_ftp(archivo_local, servidor_ftp, usuario_ftp, clave_ftp, direc
             ftp.storbinary('STOR ' + os.path.basename(archivo_local), archivo)
 
         print(f"Archivo '{os.path.basename(archivo_local)}' subido con éxito al directorio remoto '{directorio_remoto}'")
-
     except Exception as e:
         print(f"Error al subir el archivo: {e}")
-
     finally:
-        # Cerrar la conexión FTP
         ftp.quit()
 
 # Rutas y credenciales ftp
 archivo_local = './products-list.xml'
-directorio_remoto = 'public_html'
-ftp_host = 'ftp.vinalium.com'
-ftp_user = 'roblesandres@vinalium.com'
+directorio_remoto = '/'
+ftp_host = 'ftp.tucanmarketingdigital.com'
+ftp_user = 'u482066164.arobles'
 ftp_password = 'At062415*'
 
 # Llamar a la función para subir el archivo
